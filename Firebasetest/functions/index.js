@@ -1,12 +1,11 @@
+// Remember add a trailing slash when posting to 
+// https://sjx-restapi.firebaseapp.com/database/
+// reference: https://codeburst.io/express-js-on-cloud-functions-for-firebase-86ed26f9144c
 const admin = require('firebase-admin');
 
 const functions = require('firebase-functions');
 const express = require('express');
-var bodyParser = require('body-parser');
-
 const app = express();
-// app.use(bodyParser.json());
-// app.use(express.urlencoded({ extended: true }));
 
 // Initialize the database
 admin.initializeApp(functions.config().firebase);
@@ -16,6 +15,8 @@ var db = admin.firestore();
 
 app.get('/database', (req, res) => {
   res.send('get received');
+  var Device1Ref = db.collection('devices').doc('Device1');
+  Device1Ref.set({keyX: 'testX'});
 });
 
 app.post('/database', (req, res) => {
@@ -33,10 +34,9 @@ app.post('/database', (req, res) => {
 
   console.log("------------------TESTING------------------");
 
-  // Remember to send raw body as JSON(application/json)
   req.body.forEach(element => {
     console.log(element);
-    Object.keys(element).forEach(function(key) {
+    Object.keys(element).forEach(key => {
       console.log('Key : ' + key + ', Value : ' + element[key])
     })
   });
@@ -54,6 +54,7 @@ app.post('/database', (req, res) => {
     // })
   });
 
+
   // Object.keys(req.body).forEach(function(key) {
   //   console.log('Key : ' + key + ', Value : ' + req.body[key])
   // })
@@ -66,8 +67,5 @@ app.post('/database', (req, res) => {
 
 });
 
-
-
 exports.app = functions.https.onRequest(app);
-
 
