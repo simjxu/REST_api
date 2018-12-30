@@ -10,9 +10,10 @@ const app = express();
 // Initialize the database
 admin.initializeApp(functions.config().firebase);
 var db = admin.firestore();
+var Device1Ref = db.collection('devices').doc('Device1');
 
-// ------ End test
 
+// ------ API GET/POST request handlers --------------------------------------
 app.get('/database', (req, res) => {
   res.send('get received');
   var Device1Ref = db.collection('devices').doc('Device1');
@@ -68,4 +69,3 @@ app.post('/database', (req, res) => {
 });
 
 exports.app = functions.https.onRequest(app);
-
